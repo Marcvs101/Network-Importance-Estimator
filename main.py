@@ -1,4 +1,7 @@
+import json
 from scapy.all import *
+
+
 
 cap = rdpcap('input/input.pcapng')
 
@@ -74,8 +77,17 @@ for pkt in cap:
         ip_src_dst_route_count_weighted[ip_src][ip_dst] += pkt_size
 
 
-print(ip_addresses_set)
-print("----")
-print(ip_src_count_weighted)
-print("----")
-print(ip_dst_count_weighted)
+#print(ip_addresses_set)
+#print("----")
+#print(ip_src_count_weighted)
+#print("----")
+#print(ip_dst_count_weighted)
+
+
+f=open(file="output/ip_count.json",mode="w",encoding="utf-8")
+f.write(json.dumps({"src_to_count":ip_src_count,"dst_to_count":ip_dst_count,"src_to_dst_to_count":ip_src_dst_route_count}))
+f.close()
+
+f=open(file="output/ip_count_weighted.json",mode="w",encoding="utf-8")
+f.write(json.dumps({"src_to_count":ip_src_count_weighted,"dst_to_count":ip_dst_count_weighted,"src_to_dst_to_count":ip_src_dst_route_count_weighted}))
+f.close()
